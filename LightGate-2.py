@@ -14,4 +14,4 @@ while True:
         if old_beam_value == True:
             count += 1
             print(count)
-    time.sleep(0.1)
+    time.sleep(0.01)

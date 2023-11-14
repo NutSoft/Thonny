@@ -23,8 +23,6 @@ def draw_screen():
     display.text('SSD1306', 40, 28, 1)
     display.text('display 128x64', 40, 40, 1)
     display.show()
-
-    # Scroll the MicroPython logo off screen (to the right) and add a fixed banner
     for i in range(0, 127):
         time.sleep(0.01)
         display.scroll(1, 0)
@@ -34,7 +32,6 @@ def draw_screen():
         display.show()
     display.poweroff()
 
-# reset clears the screen and initiates draw_screen
 def reset(pin):
     print('RESET')
     display.poweron()
@@ -44,10 +41,12 @@ def reset(pin):
     display.show()
     time.sleep(1)
     draw_screen()
+    
+reset_pin.irq(handler = reset, trigger = Pin.IRQ_FALLING)
+try:
+    while True:
+        time.sleep(0.1)
+except(KeyboardInterrupt):
+    print('Interrupted')
+    display.poweroff()
 
-# Nothing happens until the button is pressed; note multiple presses are queued up
-reset_pin.irq(handler = reset, trigger = Pin.IRQ_FALLING | Pin.IRQ_RISING)
-
-# Nothing to see here; just an infinite loop to prevent the program terminating
-while True:
-    time.sleep(0.1)
